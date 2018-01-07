@@ -5,11 +5,12 @@ from discord.ext.commands import Bot
 from discord.ext import commands
 import platform
 
-#custom import
-from key import key
+#custom import modules
+from key import *
+import random
 
 # Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
-client = Bot(description="Basic Bot by Habchy#1665", command_prefix="PUT YOUR PREFIX HERE", pm_help = True)
+client = Bot(description="Basic Bot by Habchy#1665", command_prefix="-", pm_help = True)
 
 # This is what happens everytime the bot launches. In this case, it prints information like server count, user count the bot is connected to, and the bot id in the console.
 # Do not mess with it because the bot can break, if you wish to do so, please consult me or someone trusted.
@@ -32,11 +33,30 @@ async def on_ready():
 async def ping(*args):
 
 	await client.say(":ping_pong: Pong!")
-	await asyncio.sleep(3)
-	await client.say(":MAHAHAHAHAHAHA!! I'm Alive!")
-# After you have modified the code, feel free to delete the line above (line 33) so it does not keep popping up everytime you initiate the ping commmand.
-	
-client.run(key.key)
+
+#Basic "let me google that for you command for the bot
+@client.command()
+async def google(content):
+
+    await client.say("Let me google that for you...")
+    await asyncio.sleep(1)
+    await client.say(("https://google.com/search?q=%s&tbm=isch") % (content))
+
+#Basic DnD Dice roll
+@client.command()
+async def roll(dice : str):
+    """Rolls a dice in NdN format."""
+    try:
+        rolls, limit = map(int, dice.split('d'))
+    except Exception:
+        await client.say('Format has to be in NdN!')
+        return
+
+    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
+    await client.say(result)
+
+#start the bot	
+client.run(BotKey)
 
 # Basic Bot was created by Habchy#1665
 # Please join this Discord server if you need help: https://discord.gg/FNNNgqb
