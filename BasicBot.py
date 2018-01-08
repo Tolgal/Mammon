@@ -76,6 +76,13 @@ async def roll(dice : str):
 	# result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
     await client.say(result)
 
+@client.command()
+async def game(games : str):
+	"""Returns a random element from a comma seperated string"""
+	game_list = games.split(',')
+	random_game = game_list[random.randint(-1,len(game_list)-1)]
+	await client.say(random_game)
+
 #start the bot	
 client.run(key.BotKey)
 
