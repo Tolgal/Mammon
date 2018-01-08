@@ -40,7 +40,7 @@ async def google(search):
 	await asyncio.sleep(1)
 	await bot.say(("https://google.com/search?q=%s&tbm=isch") % (search))
 
-#The Roll itself
+#The DnD Roll function
 @bot.command(pass_context=True)
 async def roll(ctx, *, dice : str, member: discord.Member = None):
     if member is None:
