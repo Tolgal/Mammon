@@ -50,7 +50,7 @@ async def roll(dice : str):
         die, addition = die.split('+')
     elif '-' in die:
         die, addition = die.split('-')
-        addition = -addition
+        addition = '-' + addition
     try:
         rolls, limit = map(int, die.split('d'))
     except Exception:
