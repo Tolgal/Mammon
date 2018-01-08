@@ -7,6 +7,7 @@ import platform
 #custom import modules
 import key
 import random
+import Functions
 
 # Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
 client = Bot(description="4LAN basic Bot", command_prefix="-", pm_help = False)
@@ -31,7 +32,6 @@ async def ping(*args):
 
 	await client.say(":ping_pong: Pong!")
 
-
 #Basic "let me google that for you command for the bot
 @client.command()
 async def google(search):
@@ -39,21 +39,6 @@ async def google(search):
 	await client.say("Let me google that for you...")
 	await asyncio.sleep(1)
 	await client.say(("https://google.com/search?q=%s&tbm=isch") % (search))
-
-def random_numbers(number, die, addition):
-	 #Generates numbers and adds them to each other
-	numbers = []
-	for i in range(number):
-		numbers.append(random.randint(1,die))
-	total = sum(numbers)
-	string = ', '.join(str(k)for k in numbers)
-	answer = 'Result: ' + str(number) + 'D' + str(die)
-	if addition != 0:
-		total += addition
-		string += ', ' + str(addition)
-		answer = answer + '+' + str(addition)
-	answer =  answer + ' (' + string + ')\nTotal: ' + str(total)
-	return answer
 
 #Basic DnD Dice roll
 @client.command()
@@ -67,7 +52,7 @@ async def roll(dice : str):
     except Exception:
         await client.say('Format has to be in NdN!')
         return
-    answer = random_numbers(rolls, limit, int(addition))
+    answer = Functions.random_numbers(rolls, limit, int(addition))
     await client.say(answer)
 
 @client.command()
