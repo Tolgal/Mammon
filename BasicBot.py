@@ -2,7 +2,6 @@
 import discord
 import asyncio
 from discord.ext.commands import Bot
-from discord.ext import commands
 import platform
 
 #custom import modules
@@ -40,11 +39,11 @@ async def ping(*args):
 
 #Basic "let me google that for you command for the bot
 @client.command()
-async def google(content):
+async def google(search):
 
 	await client.say("Let me google that for you...")
 	await asyncio.sleep(1)
-	await client.say(("https://google.com/search?q=%s&tbm=isch") % (content))
+	await client.say(("https://google.com/search?q=%s&tbm=isch") % (search))
 
 def random_numbers(number, die, addition):
 	 #Generates numbers and adds them to each other
@@ -64,22 +63,17 @@ def random_numbers(number, die, addition):
 #Basic DnD Dice roll
 @client.command()
 async def roll(dice : str):
-	#Rolls a dice in NdN format.
-	# Turns everything to lowercase
-	die = dice.lower()
-	addition = 0
-	if '+' in die:
-		die, addition = die.split('+')
-	try:
-		rolls, limit = map(int, die.split('d'))
-	except Exception:
-		await client.say('Format has to be in NdN!')
-		return
-   	
-    result = random_numbers(rolls, limit, int(addition))
-    await client.say(result)
-    # result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
-
+    die = dice.lower()
+    addition = 0
+    if '+' in die:
+        die, addition = die.split('+')
+    try:
+        rolls, limit = map(int, die.split('d'))
+    except Exception:
+        await client.say('Format has to be in NdN!')
+    return
+    answer = random_numbers(rolls, limit, int(addition))
+    await client.say(answer)
 
 @client.command()
 async def game(games : str):
