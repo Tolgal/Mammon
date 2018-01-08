@@ -10,7 +10,9 @@ def random_numbers(number, die, addition):
 	answer = '```**Result**: ' + str(number) + 'D' + str(die)
 	if addition != 0:
 		total += addition
-		string += ', ' + str(addition)
-		answer = answer + '+' + str(addition)
-	answer =  answer + ' (' + string + ')\n**Total**: ' + str(total) + '```'
+		if addition > 0:
+		    answer = answer + '+' + str(addition)
+		if addition < 0:
+		    answer = answer + str(addition)
+	answer =  answer + ' (' + string + ') ' + str(addition) + '\n**Total**: ' + str(total) + '```'
 	return answer
