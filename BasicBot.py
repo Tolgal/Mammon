@@ -14,6 +14,7 @@ client = Bot(description="Basic Bot by Habchy#1665", command_prefix="-", pm_help
 
 # This is what happens everytime the bot launches. In this case, it prints information like server count, user count the bot is connected to, and the bot id in the console.
 # Do not mess with it because the bot can break, if you wish to do so, please consult me or someone trusted.
+
 @client.event
 async def on_ready():
 	print('Logged in as '+client.user.name+' (ID:'+client.user.id+') | Connected to '+str(len(client.servers))+' servers | Connected to '+str(len(set(client.get_all_members())))+' users')
@@ -28,11 +29,14 @@ async def on_ready():
 	print('--------')
 	print('Created by Habchy#1665')
 
+#Commmand's
+
 # This is a basic example of a call and response command. You tell it do "this" and it does it.
 @client.command()
 async def ping(*args):
 
 	await client.say(":ping_pong: Pong!")
+
 
 #Basic "let me google that for you command for the bot
 @client.command()
@@ -43,7 +47,7 @@ async def google(content):
 	await client.say(("https://google.com/search?q=%s&tbm=isch") % (content))
 
 def random_numbers(number, die, addition):
-	""" Generates numbers and adds them to each other"""
+	 #Generates numbers and adds them to each other
 	numbers = []
 	for i in range(number):
 		numbers.append(random.randint(1,die))
@@ -60,7 +64,7 @@ def random_numbers(number, die, addition):
 #Basic DnD Dice roll
 @client.command()
 async def roll(dice : str):
-	"""Rolls a dice in NdN format."""
+	#Rolls a dice in NdN format.
 	# Turns everything to lowercase
 	die = dice.lower()
 	addition = 0
@@ -71,14 +75,15 @@ async def roll(dice : str):
 	except Exception:
 		await client.say('Format has to be in NdN!')
 		return
-
-	result = random_numbers(rolls, limit, int(addition))
-	# result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
+   	
+    result = random_numbers(rolls, limit, int(addition))
     await client.say(result)
+    # result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
+
 
 @client.command()
 async def game(games : str):
-	"""Returns a random element from a comma seperated string"""
+	#Returns a random element from a comma seperated string
 	try:
 		game_list = games.split('/')
 	except Exception:
@@ -86,6 +91,7 @@ async def game(games : str):
 		return
 	random_game = game_list[random.randint(-1,len(game_list)-1)]
 	await client.say(random_game)
+
 
 #start the bot	
 client.run(key.BotKey)
