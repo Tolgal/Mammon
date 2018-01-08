@@ -71,6 +71,13 @@ async def game(games : str):
 	await bot.say(random_game)
 
 
+@bot.command(pass_context=True)
+async def test(ctx, member: discord.Member = None):
+    if member is None:
+        member = ctx.message.author.id
+
+    await bot.say('<@{0}> Hello'.format(member))
+
 #start the bot	
 bot.run(key.BotKey)
 
