@@ -43,7 +43,8 @@ async def google(search):
 #Basic DnD Dice roll
 @client.command()
 async def roll(dice : str):
-    die = dice.lower()
+    nospace_dice = dice.replace(' ', '')
+    die = nospace_dice.lower()
     addition = 0
     if '+' in die:
         die, addition = die.split('+')
