@@ -6,7 +6,7 @@ from discord.ext import commands
 import platform
 
 #custom import modules
-from key import *
+import key
 import random
 
 # Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
@@ -38,28 +38,24 @@ async def ping(*args):
 @client.command()
 async def google(content):
 
-    await client.say("Let me google that for you...")
-    await asyncio.sleep(1)
-    await client.say(("https://google.com/search?q=%s&tbm=isch") % (content))
+	await client.say("Let me google that for you...")
+	await asyncio.sleep(1)
+	await client.say(("https://google.com/search?q=%s&tbm=isch") % (content))
 
 def random_numbers(number, die, addition):
-    """ Generates numbers and adds them to each other"""
-    numbers = []
-    total = 0
-    for i in range(number):
-        numbers.append(random.randint(1,die))
-    for j in numbers:
-        total += j
-    string = ', '.join(str(k)for k in numbers)
-    if addition != 0:
-        total += addition
-        string += ', ' + str(addition)
-        string = 'Result: ' + str(number) + 'D' + str(die) + '+' + str(addition) + \
-                 ' (' + string + ')\nTotal: ' + str(total)
-    else:
-        string = 'Result: ' + str(number) + 'D' + str(die) + \
-                 ' (' + string + ')\nTotal: ' + str(total)
-    return string
+	""" Generates numbers and adds them to each other"""
+	numbers = []
+	for i in range(number):
+		numbers.append(random.randint(1,die))
+	total = sum(numbers)
+	string = ', '.join(str(k)for k in numbers)
+	answer = 'Result: ' + str(number) + 'D' + str(die)
+	if addition != 0:
+		total += addition
+		string += ', ' + str(addition)
+		answer = answer + '+' + str(addition)
+	answer =  answer + ' (' + string + ')\nTotal: ' + str(total)
+	return answer
 
 #Basic DnD Dice roll
 @client.command()
@@ -77,11 +73,11 @@ async def roll(dice : str):
 		return
 
 	result = random_numbers(rolls, limit, int(addition))
-    # result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
+	# result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
     await client.say(result)
 
 #start the bot	
-client.run(BotKey)
+client.run(key.BotKey)
 
 # Basic Bot was created by Habchy#1665
 # Please join this Discord server if you need help: https://discord.gg/FNNNgqb
