@@ -62,14 +62,14 @@ async def roll(ctx, *, dice : str, member: discord.Member = None):
     await bot.say('<@{0}>'.format(member) + answer)
 
 @bot.command()
-async def game(games : str):
+async def game(*, games : str):
 	#Returns a random element from a comma seperated string
 	try:
 		game_list = games.split('/')
 	except Exception:
 		await bot.say('Games have to be separated by a "/"')
 		return
-	random_game = game_list[random.randint(-1,len(game_list)-1)]
+	random_game = game_list[random.randint(0,len(game_list)-1)]
 	await bot.say(random_game)
 
 """
