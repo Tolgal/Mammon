@@ -40,9 +40,11 @@ async def google(search):
 	await asyncio.sleep(1)
 	await bot.say(("https://google.com/search?q=%s&tbm=isch") % (search))
 
-#Basic DnD Dice roll
-@bot.command()
-async def roll(dice : str):
+#The Roll itself
+@bot.command(pass_context=True)
+async def roll(ctx, *, dice : str, member: discord.Member = None):
+    if member is None:
+        member = ctx.message.author.id
     nospace_dice = dice.replace(' ', '')
     die = nospace_dice.lower()
     addition = 0
@@ -57,7 +59,7 @@ async def roll(dice : str):
         await bot.say('Format has to be in NdN!')
         return
     answer = Functions.random_numbers(rolls, limit, int(addition))
-    await bot.say(answer)
+    await bot.say('<@{0}>'.format(member) + answer)
 
 @bot.command()
 async def game(games : str):
@@ -70,14 +72,15 @@ async def game(games : str):
 	random_game = game_list[random.randint(-1,len(game_list)-1)]
 	await bot.say(random_game)
 
-
+"""
+#test getting the user ID + commands
 @bot.command(pass_context=True)
-async def test(ctx, member: discord.Member = None):
+async def test(ctx, *, temp, member: discord.Member = None):
     if member is None:
         member = ctx.message.author.id
-
-    await bot.say('<@{0}> Hello'.format(member))
-
+    await bot.say('<@{0}>'.format(member))
+    await bot.say(str(ctx.message.content))
+"""
 #start the bot	
 bot.run(key.BotKey)
 
