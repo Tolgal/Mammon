@@ -83,6 +83,7 @@ async def game(games : str):
 		game_list = games.split('/')
 	except Exception:
 		await client.say('Games have to be separated by a "/"')
+		return
 	random_game = game_list[random.randint(-1,len(game_list)-1)]
 	await client.say(random_game)
 
