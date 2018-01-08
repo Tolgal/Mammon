@@ -30,7 +30,7 @@ async def on_ready():
 
 #Commmand's
 
-# This is a basic example of a call and response command. You tell it do "this" and it does it.
+# ping > pong
 @client.command()
 async def ping(*args):
 
@@ -71,7 +71,7 @@ async def roll(dice : str):
         rolls, limit = map(int, die.split('d'))
     except Exception:
         await client.say('Format has to be in NdN!')
-    return
+        return
     answer = random_numbers(rolls, limit, int(addition))
     await client.say(answer)
 
