@@ -61,6 +61,25 @@ async def roll(ctx, *, dice : str, member: discord.Member = None):
     answer = Functions.random_numbers(rolls, limit, int(addition))
     await bot.say('<@{0}>'.format(member) + answer)
 
+#Rolls 4d6 (keep highest 3) six times
+@bot.command(pass_context=True)
+async def randchar(ctx, member: discord.Member = None):
+	result = ""
+	stats = []
+	if member is None:
+		member = ctx.message.author.id
+	for i in range(6):
+		d6 = []
+		for j in range(4):
+			d6.append(random.randint(1,6))
+		result += str(d6) + '\n'
+		d6 = sorted(d6)
+		stats.append(sum(d6[1::]))
+	await bot.say('<@{0}>'.format(member) + '\n' + result + str(stats))
+
+
+
+
 @bot.command()
 async def game(*, games : str):
 	#Returns a random element from a comma seperated string
