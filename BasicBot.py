@@ -49,7 +49,6 @@ async def roll(ctx, *, dice : str, member: discord.Member = None):
         member = ctx.message.author.id
     nospace_dice = Functions.multireplace(dice, {' ': '', '\n': '', '\r': ''})
     die = nospace_dice.lower()
-    print(die)
     dice_list = Functions.multireplace(die, {"+":"," ,"-":",-"})
     dice_list = dice_list.split(',')
     dice_list = list(filter(None, dice_list))
