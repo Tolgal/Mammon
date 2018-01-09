@@ -32,6 +32,7 @@ async def ping(*args):
 
 	await bot.say(":ping_pong: Pong!")
 
+
 #Basic "let me google that for you command for the bot
 @bot.command()
 async def google(search):
@@ -39,6 +40,7 @@ async def google(search):
 	await bot.say("Let me google that for you...")
 	await asyncio.sleep(1)
 	await bot.say(("https://google.com/search?q=%s&tbm=isch") % (search))
+
 
 #The DnD Roll function
 @bot.command(pass_context=True)
@@ -61,6 +63,7 @@ async def roll(ctx, *, dice : str, member: discord.Member = None):
     answer = Functions.random_numbers(rolls, limit, int(addition))
     await bot.say('<@{0}>'.format(member) + answer)
 
+
 #Rolls 4d6 (keep highest 3) six times
 @bot.command(pass_context=True)
 async def randchar(ctx, member: discord.Member = None):
@@ -78,8 +81,6 @@ async def randchar(ctx, member: discord.Member = None):
 	await bot.say('<@{0}>'.format(member) + '\n' + result + str(stats))
 
 
-
-
 @bot.command()
 async def game(*, games : str):
 	#Returns a random element from a comma seperated string
@@ -91,6 +92,7 @@ async def game(*, games : str):
 	random_game = game_list[random.randint(0,len(game_list)-1)]
 	await bot.say(random_game)
 
+
 """
 #test getting the user ID + commands
 @bot.command(pass_context=True)
@@ -100,6 +102,8 @@ async def test(ctx, *, temp, member: discord.Member = None):
     await bot.say('<@{0}>'.format(member))
     await bot.say(str(ctx.message.content))
 """
+
+
 #start the bot	
 bot.run(key.BotKey)
 
