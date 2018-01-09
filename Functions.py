@@ -36,3 +36,13 @@ def multireplace(string, replacements):
 
     # For each match, look up the new string in the replacements
     return regexp.sub(lambda match: replacements[match.group(0)], string)
+
+
+def random_roll(rr_number, rr_die):
+    """
+    Generates rr_number random numbers between 0 and the value of rr_die.
+    """
+    rr_numbers = []
+    for x in range(rr_number):
+        rr_numbers.append(random.randint(1, rr_die))
+    return rr_numbers

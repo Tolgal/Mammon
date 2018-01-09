@@ -8,6 +8,7 @@ import platform
 import key
 import random
 import Functions
+import re
 
 # Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
 bot = commands.Bot(command_prefix="-", description="4LAN basic Bot", pm_help = True)
@@ -46,20 +47,49 @@ async def google(ctx, *, search : str, member: discord.Member = None):
 async def roll(ctx, *, dice : str, member: discord.Member = None):
     if member is None:
         member = ctx.message.author.id
-    nospace_dice = dice.replace(' ', '')
+    nospace_dice = Functions.multireplace(dice, {' ': '', '\n': '', '\r': ''})
     die = nospace_dice.lower()
-    addition = 0
-    if '+' in die:
-        die, addition = die.split('+')
-    elif '-' in die:
-        die, addition = die.split('-')
-        addition = '-' + addition
-    try:
-        rolls, limit = map(int, die.split('d'))
-    except Exception:
-        await bot.say('Format has to be in NdN!')
-        return
-    answer = Functions.random_numbers(rolls, limit, int(addition))
+    print(die)
+    dice_list = Functions.multireplace(die, {"+":"," ,"-":",-"})
+    dice_list = dice_list.split(',')
+    dice_list = list(filter(None, dice_list))
+    results = []
+    rex = re.compile("^[0-9]+d[0-9]+$")
+    for i in dice_list:
+        if i.replace("-", "").isdigit() == True:
+            results.append([int(i)])
+        elif rex.match(i.replace("-", "")):
+            if '-' in i:
+                i = i.replace('-', '')
+                rolls, limit = map(int, i.split('d'))
+                temp_list = Functions.random_roll(rolls, limit)
+                neg_temp_list = [ -x for x in temp_list]
+                results.append(neg_temp_list)
+            else:
+                rolls, limit = map(int, i.split('d'))
+                results.append(Functions.random_roll(rolls, limit))
+        else:
+            comment = 'This is not the right format: ' + i
+            await bot.say(comment)
+            return
+    total = 0
+    for i in results:
+        total += sum(i)
+
+    answer = '**Result:**'
+    for i in range(len(dice_list)):
+        if i != range(len(dice_list))[-1]:
+            if dice_list[i].replace("-", "").isdigit() == True:
+                answer = answer + ' ' + dice_list[i] + ' +'
+            else:
+                answer = answer + ' ' + dice_list[i] + '(' + ','.join(str(k) for k in results[i]) + ') +'
+        else:
+            if dice_list[i].replace("-", "").isdigit() == True:
+                answer = answer + ' ' + dice_list[i]
+            else:
+                answer = answer + ' ' + dice_list[i] + '(' + ','.join(str(k) for k in results[i]) + ')'
+
+    answer = answer + '\n**Total**: ' + str(total)
     await bot.say('<@{0}>'.format(member) + answer)
 
 
