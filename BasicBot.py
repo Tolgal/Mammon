@@ -67,18 +67,17 @@ async def roll(ctx, *, dice : str, member: discord.Member = None):
 #Rolls 4d6 (keep highest 3) six times
 @bot.command(pass_context=True)
 async def randchar(ctx, member: discord.Member = None):
+	stat_names = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA']
 	result = ""
-	stats = []
 	if member is None:
 		member = ctx.message.author.id
-	for i in range(6):
+	for i in stat_names:
 		d6 = []
 		for j in range(4):
 			d6.append(random.randint(1,6))
-		result += str(d6) + '\n'
-		d6 = sorted(d6)
-		stats.append(sum(d6[1::]))
-	await bot.say('<@{0}>'.format(member) + '\n' + result + str(stats))
+		sorted_d6 = sorted(d6)
+		result += '{0:10} {1}'.format(str(d6), '= **' + str(sum(sorted_d6[1::])) + " **" + i + '\n') 
+	await bot.say('<@{0}>'.format(member) + '\n' +  result)
 
 
 @bot.command()
