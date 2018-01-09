@@ -34,12 +34,11 @@ async def ping(*args):
 
 
 #Basic "let me google that for you command for the bot
-@bot.command()
-async def google(search):
-
-	await bot.say("Let me google that for you...")
-	await asyncio.sleep(1)
-	await bot.say(("https://google.com/search?q=%s&tbm=isch") % (search))
+@bot.command(pass_context=True)
+async def google(ctx, *, search : str, member: discord.Member = None):
+        if member is None:
+            member = ctx.message.author.id
+        await bot.say('<@{0}>'.format(member) + ' Let me google that for you: ' + ('https://google.com/search?q=%s&tbm=isch') % (search))
 
 
 #The DnD Roll function
