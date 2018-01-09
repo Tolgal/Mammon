@@ -76,7 +76,7 @@ async def roll(ctx, *, dice : str, member: discord.Member = None):
     for i in results:
         total += sum(i)
 
-    answer = '**Result:**'
+    answer = '\n**Result:**'
     for i in range(len(dice_list)):
         if i != range(len(dice_list))[-1]:
             if dice_list[i].replace("-", "").isdigit() == True:
