@@ -99,6 +99,15 @@ async def game(*, games : str):
 	await bot.say(random_game)
 
 
+@bot.command(pass_context = True)
+async def greeting(ctx, *, search : str, member : discord.Member = None):
+    if member is None:
+        member = ctx.message.author.id
+    print(member, search)
+    search = search.replace(' ', '+')
+    await bot.say('<@{0}>'.format(member) + '\n' +  "https://lmgtfy.com/?q={}".format(search))
+
+
 @bot.command(pass_context=True)
 async def test(ctx, roles: discord.Member.roles = None):
     if roles is None:
