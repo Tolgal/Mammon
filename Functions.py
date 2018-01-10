@@ -86,3 +86,16 @@ def create_roll_answer(cra_dice, cra_results):
                 cra_answer = cra_answer + ' ' + cra_dice[i] + '(' + ','.join(str(k) for k in cra_results[i]) + ')'
     cra_answer = cra_answer + '\n**Total**: ' + str(total)
     return cra_answer
+
+
+def check_mention(cm_string):
+    rex = re.compile("^.*?@[0-9]*.*?$")
+    if rex.match(cm_string):
+        match = re.search("@[0-9]*", cm_string)
+        member = match.group(0)
+        cm_string = cm_string.replace(member, '')
+        cm_string = Functions.multireplace(cm_string, {member:'', '<':'', '>':''})
+        member = member.replace('@', '')
+        return cm_string, member
+    member = None
+    cm_string, member
