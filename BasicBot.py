@@ -100,7 +100,21 @@ async def game(*, games : str):
 
 
 @bot.command(pass_context = True)
-async def greeting(ctx, *, search : str, member : discord.Member = None):
+async def mention(ctx, *, greeting : str, member : discord.Member = None):
+    rex = re.compile("^.*?@[0-9]*.*?$")
+    if rex.match(greeting):
+        match = re.search("@[0-9]*", greeting)
+        member = match.group(0)
+        greeting = greeting.replace(member, '')
+        greeting = Functions.multireplace(greeting, {member:'', '<':'', '>':''})
+        member = member.replace('@', '')
+    if member is None:
+        member = ctx.message.author.id
+    await bot.say('<@{0}>'.format(member) + '\n' +  greeting)
+
+
+@bot.command(pass_context = True)
+async def lmgtfy(ctx, *, search : str, member : discord.Member = None):
     if member is None:
         member = ctx.message.author.id
     print(member, search)
@@ -114,10 +128,8 @@ async def test(ctx, roles: discord.Member.roles = None):
         roles = ctx.message.author.roles
     if "399325464855969796" in [y.id for y in roles]:
         await bot.say('You have permission to use this command')
-        return
     else:
         await bot.say('You don\'t have permission to use this command')
-        return
 
 
 """
