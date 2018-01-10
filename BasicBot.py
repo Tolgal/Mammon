@@ -10,6 +10,8 @@ import random
 import Functions
 import re
 
+bot_dev_role_ids = {'Admin':'400573127412678656', 'Bot':'399325522313609217', 'Developer':'399325464855969796'}
+
 # Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
 bot = commands.Bot(command_prefix="-", description="4LAN basic Bot", pm_help = True)
 
