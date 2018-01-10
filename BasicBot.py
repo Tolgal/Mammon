@@ -49,12 +49,8 @@ async def google(ctx, *, search : str, member: discord.Member = None):
 async def roll(ctx, *, dice : str, member: discord.Member = None):
     if member is None:
         member = ctx.message.author.id
-    # Clean up string and convert to list
-    nospace_dice = Functions.multireplace(dice, {' ': '', '\n': '', '\r': ''})
-    die = nospace_dice.lower()
-    dice_list = Functions.multireplace(die, {"+":"," ,"-":",-"})
-    dice_list = dice_list.split(',')
-    dice_list = list(filter(None, dice_list))
+    ## Clean up string and convert to list
+    dice_list = Functions.cleanup_roll(dice)
     # loop through all elements in dice_list and if its an int put it as a list in results
     # or if in format NdN send to function for list of random numbers and put in results
     # if not in right format comment will be sent and function is stopped
@@ -64,38 +60,14 @@ async def roll(ctx, *, dice : str, member: discord.Member = None):
         if i.replace("-", "").isdigit() == True:
             results.append([int(i)])
         elif rex.match(i.replace("-", "")):
-            if '-' in i:
-                i = i.replace('-', '')
-                rolls, limit = map(int, i.split('d'))
-                temp_list = Functions.random_roll(rolls, limit)
-                neg_temp_list = [ -x for x in temp_list]
-                results.append(neg_temp_list)
-            else:
-                rolls, limit = map(int, i.split('d'))
-                results.append(Functions.random_roll(rolls, limit))
+            results.append(Functions.create_die(i))
         else:
             comment = 'This is not the right format: ' + i
             await bot.say(comment)
             return
-    # Calculate sum of al numbers in results
-    total = 0
-    for i in results:
-        total += sum(i)
+    # Calculate sum of all numbers in results and formulate answer string
     # Formulate answer string
-    answer = '\n**Result:**'
-    for i in range(len(dice_list)):
-        if i != range(len(dice_list))[-1]:
-            if dice_list[i].replace("-", "").isdigit() == True:
-                answer = answer + ' ' + dice_list[i] + ' +'
-            else:
-                answer = answer + ' ' + dice_list[i] + '(' + ','.join(str(k) for k in results[i]) + ') +'
-        else:
-            if dice_list[i].replace("-", "").isdigit() == True:
-                answer = answer + ' ' + dice_list[i]
-            else:
-                answer = answer + ' ' + dice_list[i] + '(' + ','.join(str(k) for k in results[i]) + ')'
-    answer = answer + '\n**Total**: ' + str(total)
-
+    answer = Functions.create_roll_answer(dice_list, results)
     await bot.say('<@{0}>'.format(member) + answer)
 
 

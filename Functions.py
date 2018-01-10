@@ -46,3 +46,43 @@ def random_roll(rr_number, rr_die):
     for x in range(rr_number):
         rr_numbers.append(random.randint(1, rr_die))
     return rr_numbers
+
+
+def cleanup_roll(words):
+    replaced = multireplace(words, {' ': '', '\n': '', '\r': '', '\t':'', "+":"," ,"-":",-"})
+    lowercase = replaced.lower()
+    new_list = lowercase.split(',')
+    new_list = list(filter(None, new_list))
+    return new_list
+
+
+def create_die(cd_die):
+    if '-' in cd_die:
+        cd_die = cd_die.replace('-', '')
+        rolls, limit = map(int, cd_die.split('d'))
+        temp_list = random_roll(rolls, limit)
+        neg_temp_list = [ -x for x in temp_list]
+        return neg_temp_list
+    else:
+        rolls, limit = map(int, cd_die.split('d'))
+        return random_roll(rolls, limit)
+
+
+def create_roll_answer(cra_dice, cra_results):
+    total = 0
+    for i in cra_results:
+        total += sum(i)
+    cra_answer = '\n**Result:**'
+    for i in range(len(cra_dice)):
+        if i != range(len(cra_dice))[-1]:
+            if cra_dice[i].replace("-", "").isdigit() == True:
+                cra_answer = cra_answer + ' ' + cra_dice[i] + ' +'
+            else:
+                cra_answer = cra_answer + ' ' + cra_dice[i] + '(' + ','.join(str(k) for k in cra_results[i]) + ') +'
+        else:
+            if cra_dice[i].replace("-", "").isdigit() == True:
+                cra_answer = cra_answer + ' ' + cra_dice[i]
+            else:
+                cra_answer = cra_answer + ' ' + cra_dice[i] + '(' + ','.join(str(k) for k in cra_results[i]) + ')'
+    cra_answer = cra_answer + '\n**Total**: ' + str(total)
+    return cra_answer
