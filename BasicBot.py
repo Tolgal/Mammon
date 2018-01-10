@@ -127,6 +127,18 @@ async def game(*, games : str):
 	await bot.say(random_game)
 
 
+@bot.command(pass_context=True)
+async def test(ctx, roles: discord.Member.roles = None):
+    if roles is None:
+        roles = ctx.message.author.roles
+    if "399325464855969796" in [y.id for y in roles]:
+        await bot.say('You have permission to use this command')
+        return
+    else:
+        await bot.say('You don\'t have permission to use this command')
+        return
+
+
 """
 #test getting the user ID + commands
 @bot.command(pass_context=True)
