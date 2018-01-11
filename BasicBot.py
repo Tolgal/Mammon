@@ -126,7 +126,7 @@ async def lmgtfy(ctx, *, search : str, member : discord.Member = None):
 async def test(ctx, roles: discord.Member.roles = None):
     if roles is None:
         roles = ctx.message.author.roles
-    if "399325464855969796" in [y.id for y in roles]:
+    if bot_dev_role_ids.get('Developer') in [y.id for y in roles]:
         await bot.say('You have permission to use this command')
     else:
         await bot.say('You don\'t have permission to use this command')
