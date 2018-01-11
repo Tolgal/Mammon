@@ -99,3 +99,6 @@ def check_mention(cm_string):
         return cm_string, member
     member = None
     cm_string, member
+
+if __name__ == "__main__":
+    check_mention("peanut")
