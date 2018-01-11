@@ -25,18 +25,27 @@ async def on_ready():
 	print('--------')
 	print('Use this link to invite {}:'.format(bot.user.name))
 	print('https://discordapp.com/oauth2/authorize?bot_id={}&scope=bot&permissions=8'.format(bot.user.id))
+	await bot.change_presence(game=discord.Game(name="Say -help Tolgal is evil!"))
 
 
 """Commmand's"""
 
+#Automatically removes commands given to bot
+#@bot.event
+#async def on_message(message):
+#    if message.content.startswith('-'):
+#        await bot.delete_message(message)
+#    await bot.process_commands(message)
+
+
 # ping > pong
-@bot.command()
+@bot.command(brief='Play PingPong with Mammon', description='Play PingPong with Mammon. Bot returns :ping_pong: Pong!')
 async def ping(*args):
 
 	await bot.say(":ping_pong: Pong!")
 
 
-#Basic "let me google that for you command for the bot
+#Basic "let me google that for you" command for the bot
 @bot.command(pass_context=True)
 async def google(ctx, *, search : str, member: discord.Member = None):
         if member is None:
@@ -87,16 +96,21 @@ async def randchar(ctx, member: discord.Member = None):
 	await bot.say('<@{0}>'.format(member) + '\n' +  result)
 
 
-@bot.command()
-async def game(*, games : str):
+@bot.command(pass_context = True)
+async def game(ctx, *, games : str, member : discord.Member = None):
 	#Returns a random element from a comma seperated string
-	try:
-		game_list = games.split('/')
-	except Exception:
-		await bot.say('Games have to be separated by a "/"')
-		return
-	random_game = game_list[random.randint(0,len(game_list)-1)]
-	await bot.say(random_game)
+    if member is None:
+        member = ctx.message.author.id
+    try:
+        game_list = games.split('/')
+    except Exception:
+        await bot.say('Games have to be separated by a "/"')
+        return
+    random_game = game_list[random.randint(0,len(game_list)-1)]
+    message = "After much deliberating between the options (**" + ', '.join(game_list) + \
+        '**) it has been decided **' + random_game + '** is the best.'
+    #await bot.say(random_game)
+    await bot.say('<@{0}>'.format(member) + '\n' +  message)
 
 
 @bot.command(pass_context = True)
