@@ -44,6 +44,17 @@ async def google(ctx, *, search : str, member: discord.Member = None):
         await bot.say('<@{0}>'.format(member) + ' Let me google that for you: ' + ('https://google.com/search?q=%s&tbm=isch') % (search))
 
 
+#Mentions an user
+@bot.command(pass_context=True)
+async def pinguser(ctx, *, pu_name : str):
+	user = discord.Server.get_member_named(ctx.message.server, pu_name)
+	if user is not None:
+		user_id = user.id
+		await bot.say('<@' + user_id + '>')
+	else:
+		await bot.say("User not found.")
+
+
 #The DnD Roll function
 @bot.command(pass_context=True)
 async def roll(ctx, *, dice : str, member: discord.Member = None):
