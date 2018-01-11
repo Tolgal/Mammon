@@ -94,7 +94,7 @@ def check_mention(cm_string):
         match = re.search("@[0-9]*", cm_string)
         member = match.group(0)
         cm_string = cm_string.replace(member, '')
-        cm_string = Functions.multireplace(cm_string, {member:'', '<':'', '>':''})
+        cm_string = multireplace(cm_string, {member:'', '<':'', '>':''})
         member = member.replace('@', '')
         return cm_string, member
     member = None

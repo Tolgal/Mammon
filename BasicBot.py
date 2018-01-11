@@ -115,6 +115,7 @@ async def mention(ctx, *, greeting : str, member : discord.Member = None):
 
 @bot.command(pass_context = True)
 async def lmgtfy(ctx, *, search : str, member : discord.Member = None):
+    search, member = Functions.check_mention(search)
     if member is None:
         member = ctx.message.author.id
     print(member, search)
