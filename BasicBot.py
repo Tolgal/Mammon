@@ -78,7 +78,7 @@ async def roll(ctx, *, dice : str, member: discord.Member = None):
     # Calculate sum of all numbers in results and formulate answer string
     # Formulate answer string
     answer = Functions.create_roll_answer(dice_list, results)
-    await bot.say('<@{0}>'.format(member) + answer)
+    await bot.say('<@{0}>{1}'.format(member, answer))
 
 
 #Rolls 4d6 (keep highest 3) six times
@@ -94,7 +94,7 @@ async def randchar(ctx, member: discord.Member = None):
 			d6.append(random.randint(1,6))
 		sorted_d6 = sorted(d6)
 		result += '{0:10} {1}'.format(str(d6), '= **' + str(sum(sorted_d6[1::])) + " **" + i + '\n') 
-	await bot.say('<@{0}>'.format(member) + '\n' +  result)
+	await bot.say('<@{0}>\n{1}'.format(member, result))
 
 
 @bot.command(pass_context = True)
@@ -124,7 +124,7 @@ async def mention(ctx, *, greeting : str, member : discord.Member = None):
         member = member.replace('@', '')
     if member is None:
         member = ctx.message.author.id
-    await bot.say('<@{0}>'.format(member) + '\n' +  greeting)
+    await bot.say('<@{0}>\n{1}'.format(member, greeting))
 
 
 @bot.command(pass_context = True)
@@ -136,7 +136,7 @@ async def lmgtfy(ctx, *, search : str, member : discord.Member = None):
         member = ctx.message.author.id
     print(member, search)
     search = search.replace(' ', '+')
-    await bot.say('<@{0}>'.format(member) + '\n' +  "https://lmgtfy.com/?q={}".format(search))
+    await bot.say('<@{0}>\nhttps://lmgtfy.com/?q={1}'.format(member, search))
 
 
 #Mentions an user using name
