@@ -132,12 +132,9 @@ async def mention(ctx, *, greeting : str, member : discord.Member = None):
 
 @bot.command(pass_context = True)
 async def lmgtfy(ctx, *, search : str, member : discord.Member = None):
-    try:
-        search, member = Functions.check_mention(search)
-    #if member is "None":
-    except:
+    search, member = Functions.check_mention(search)
+    if member is None:
         member = ctx.message.author.id
-    print(member, search)
     search = search.replace(' ', '+')
     await bot.say('<@{0}>\nhttps://lmgtfy.com/?q={1}'.format(member, search))
 
