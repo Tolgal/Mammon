@@ -35,7 +35,10 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     if message.content.startswith(delete_commands):
-        await bot.delete_message(message)
+        try:
+            await bot.delete_message(message)
+        except:
+            pass
     await bot.process_commands(message)
 
 
