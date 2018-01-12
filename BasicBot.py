@@ -11,6 +11,7 @@ import Functions
 import re
 
 bot_dev_role_ids = {'Admin':'400573127412678656', 'Bot':'399325522313609217', 'Developer':'399325464855969796'}
+delete_commands = ('-google', '-roll', '-randchar')
 
 # Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
 bot = commands.Bot(command_prefix="-", description="4LAN basic Bot", pm_help = True)
@@ -31,11 +32,11 @@ async def on_ready():
 """Commmand's"""
 
 #Automatically removes commands given to bot
-#@bot.event
-#async def on_message(message):
-#    if message.content.startswith('-'):
-#        await bot.delete_message(message)
-#    await bot.process_commands(message)
+@bot.event
+async def on_message(message):
+    if message.content.startswith(delete_commands):
+        await bot.delete_message(message)
+    await bot.process_commands(message)
 
 
 # ping > pong
@@ -98,7 +99,7 @@ async def randchar(ctx, member: discord.Member = None):
 
 @bot.command(pass_context = True)
 async def game(ctx, *, games : str, member : discord.Member = None):
-	#Returns a random element from a comma seperated string
+	#Returns a random element from a backwards slash seperated string
     if member is None:
         member = ctx.message.author.id
     try:
@@ -109,8 +110,7 @@ async def game(ctx, *, games : str, member : discord.Member = None):
     random_game = game_list[random.randint(0,len(game_list)-1)]
     message = "After much deliberating between the options (**" + ', '.join(game_list) + \
         '**) it has been decided **' + random_game + '** is the best.'
-    #await bot.say(random_game)
-    await bot.say('<@{0}>'.format(member) + '\n' +  message)
+    await bot.say('<@{0}>\n{1}'.format(member, message))
 
 
 @bot.command(pass_context = True)
