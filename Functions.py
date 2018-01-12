@@ -98,7 +98,7 @@ def check_mention(cm_string):
         member = member.replace('@', '')
         return cm_string, member
     member = None
-    cm_string, member
+    return cm_string, member
 
 if __name__ == "__main__":
-    check_mention("peanut")
+    print(check_mention("peanut"))
