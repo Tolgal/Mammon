@@ -61,8 +61,7 @@ def create_die(cd_die):
         cd_die = cd_die.replace('-', '')
         rolls, limit = map(int, cd_die.split('d'))
         temp_list = random_roll(rolls, limit)
-        neg_temp_list = [ -x for x in temp_list]
-        return neg_temp_list
+        return [ -x for x in temp_list]
     else:
         rolls, limit = map(int, cd_die.split('d'))
         return random_roll(rolls, limit)
@@ -73,17 +72,15 @@ def create_roll_answer(cra_dice, cra_results):
     for i in cra_results:
         total += sum(i)
     cra_answer = '\n**Result:**'
-    for i in range(len(cra_dice)):
-        if i != range(len(cra_dice))[-1]:
-            if cra_dice[i].replace("-", "").isdigit() == True:
-                cra_answer = cra_answer + ' ' + cra_dice[i] + ' +'
-            else:
-                cra_answer = cra_answer + ' ' + cra_dice[i] + '(' + ','.join(str(k) for k in cra_results[i]) + ') +'
+    for i in range(len(cra_dice[:-1])):
+        if cra_dice[i].replace("-", "").isdigit() == True:
+            cra_answer = cra_answer + ' ' + cra_dice[i] + ' +'
         else:
-            if cra_dice[i].replace("-", "").isdigit() == True:
-                cra_answer = cra_answer + ' ' + cra_dice[i]
-            else:
-                cra_answer = cra_answer + ' ' + cra_dice[i] + '(' + ','.join(str(k) for k in cra_results[i]) + ')'
+            cra_answer = cra_answer + ' ' + cra_dice[i] + '(' + ','.join(str(k) for k in cra_results[i]) + ') +'
+    if cra_dice[-1].replace("-", "").isdigit() == True:
+        cra_answer = cra_answer + ' ' + cra_dice[-1]
+    else:
+        cra_answer = cra_answer + ' ' + cra_dice[-1] + '(' + ','.join(str(k) for k in cra_results[-1]) + ')'
     cra_answer = cra_answer + '\n**Total**: ' + str(total)
     return cra_answer
 
@@ -96,9 +93,10 @@ def check_mention(cm_string):
         cm_string = cm_string.replace(member, '')
         cm_string = multireplace(cm_string, {member:'', '<':'', '>':''})
         member = member.replace('@', '')
-        return cm_string, member
-    member = None
+    else:
+        member = None
     return cm_string, member
+
 
 if __name__ == "__main__":
     print(check_mention("peanut"))
