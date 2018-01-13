@@ -86,14 +86,17 @@ def create_roll_answer(cra_dice, cra_results):
 
 
 def check_mention(cm_string):
-    match = re.search("<@[0-9]*>", cm_string)
-    print(match)
-    if match != None:
-        member = match.group(0)
-        cm_string = cm_string.replace(member, '')
-    else:
+    member, words = '', '' 
+    for word in cm_string.split():
+        match = re.search("<@[0-9]*>", cm_string)
+        if match != None:
+            member = member + match.group(0) + ' '
+            cm_string = cm_string.replace(match.group(0), '')
+        else:
+            words += word
+    if not member:
         member = None
-    return cm_string, member
+    return words, member
 
 
 
