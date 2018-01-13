@@ -86,16 +86,15 @@ def create_roll_answer(cra_dice, cra_results):
 
 
 def check_mention(cm_string):
-    rex = re.compile("^.*?@[0-9]*.*?$")
-    if rex.match(cm_string):
-        match = re.search("@[0-9]*", cm_string)
+    match = re.search("<@[0-9]*>", cm_string)
+    print(match)
+    if match != None:
         member = match.group(0)
         cm_string = cm_string.replace(member, '')
-        cm_string = multireplace(cm_string, {member:'', '<':'', '>':''})
-        member = member.replace('@', '')
     else:
         member = None
     return cm_string, member
+
 
 
 if __name__ == "__main__":
