@@ -99,6 +99,31 @@ def check_mention(cm_string):
     return words, member
 
 
+def create_server_dict(csd_botservers):
+	servers = {}
+	for server in csd_botservers:
+		servers[server] = {}
+		servers[server]['channels'], servers[server]['roles'], servers[server]['members'] = [], [], []
+		for channel in server.channels:
+			servers[server]['channels'].append(channel.id)
+		for role in server.roles:
+			servers[server]['roles'].append(role.id)
+		for member in server.members:
+			servers[server]['members'].append(member.id)
+	print(servers)
+	create_servers_files(servers)
+	return
+
+
+def create_servers_files(csf_servers):
+	for server in csf_servers:
+		file = open('%s.txt' % server, 'w')
+		string = ','.join(csf_servers[server]['channels']) + '\n' + ','.join(csf_servers[server]['roles']) + '\n' + ','.join(csf_servers[server]['members'])
+		file.write(string)
+		file.close()
+	return
+
+
 
 if __name__ == "__main__":
     print(check_mention("peanut"))

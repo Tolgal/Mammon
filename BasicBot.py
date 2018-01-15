@@ -27,6 +27,7 @@ async def on_ready():
 	print('Use this link to invite {}:'.format(bot.user.name))
 	print('https://discordapp.com/oauth2/authorize?bot_id={}&scope=bot&permissions=8'.format(bot.user.id))
 	await bot.change_presence(game=discord.Game(name="Say -help Tolgal is evil!"))
+	Functions.create_server_dict(bot.servers)
 
 
 """Commmand's"""
