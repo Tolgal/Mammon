@@ -117,7 +117,7 @@ def create_server_dict(csd_botservers):
 
 def create_servers_files(csf_servers):
 	for server in csf_servers:
-		file = open('%s.txt' % server, 'w')
+		file = open('Data\\%s.txt' % server, 'w')
 		string = ','.join(csf_servers[server]['channels']) + '\n' + ','.join(csf_servers[server]['roles']) + '\n' + ','.join(csf_servers[server]['members'])
 		file.write(string)
 		file.close()
