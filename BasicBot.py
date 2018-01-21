@@ -12,6 +12,7 @@ import re
 
 bot_dev_role_ids = {'Admin':'400573127412678656', 'Bot':'399325522313609217', 'Developer':'399325464855969796'}
 delete_commands = ('-google', '-roll', '-randchar')
+host_dict = {} #Creates the dictionary for the host messages.
 
 # Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
 bot = commands.Bot(command_prefix="-", description="4LAN basic Bot", pm_help = True)
@@ -54,15 +55,15 @@ async def ping(*args):
 @bot.command(pass_context=True)
 async def google(ctx, *, search : str, member: discord.Member = None):
         if member is None:
-            member = ctx.message.author.id
-        await bot.say('<@{0}>'.format(member) + ' Let me google that for you: ' + ('https://google.com/search?q=%s&tbm=isch') % (search))
+            member = ctx.message.author.mention
+        await bot.say('{0}\nLet me google that for you:\n'.format(member) + ('https://google.com/search?q=%s&tbm=isch') % (search))
 
 
 #The DnD Roll function
 @bot.command(pass_context=True)
 async def roll(ctx, *, dice : str, member: discord.Member = None):
     if member is None:
-        member = ctx.message.author.id
+        member = ctx.message.author.mention
     ## Clean up string and convert to list
     dice_list = Functions.cleanup_roll(dice)
     # loop through all elements in dice_list and if its an int put it as a list in results
@@ -82,7 +83,7 @@ async def roll(ctx, *, dice : str, member: discord.Member = None):
     # Calculate sum of all numbers in results and formulate answer string
     # Formulate answer string
     answer = Functions.create_roll_answer(dice_list, results)
-    await bot.say('<@{0}>{1}'.format(member, answer))
+    await bot.say('{0}{1}'.format(member, answer))
 
 
 #Rolls 4d6 (keep highest 3) six times
@@ -91,30 +92,30 @@ async def randchar(ctx, member: discord.Member = None):
 	stat_names = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA']
 	result = ""
 	if member is None:
-		member = ctx.message.author.id
+		member = ctx.message.author.mention
 	for i in stat_names:
 		d6 = []
 		for j in range(4):
 			d6.append(random.randint(1,6))
 		sorted_d6 = sorted(d6)
 		result += '{0:10} {1}'.format(str(d6), '= **' + str(sum(sorted_d6[1::])) + " **" + i + '\n') 
-	await bot.say('<@{0}>\n{1}'.format(member, result))
+	await bot.say('{0}\n{1}'.format(member, result))
 
 
 @bot.command(pass_context = True)
-async def game(ctx, *, games : str, member : discord.Member = None):
+async def choose(ctx, *, choices : str, member : discord.Member = None):
 	#Returns a random element from a backwards slash seperated string
     if member is None:
-        member = ctx.message.author.id
+        member = ctx.message.author.mention
     try:
-        game_list = games.split('/')
+        choice_list = choices.split('/')
     except Exception:
-        await bot.say('Games have to be separated by a "/"')
+        await bot.say('Choices have to be separated by a "/"')
         return
-    random_game = game_list[random.randint(0,len(game_list)-1)]
-    message = "After much deliberating between the options (**" + ', '.join(game_list) + \
-        '**) it has been decided **' + random_game + '** is the best.'
-    await bot.say('<@{0}>\n{1}'.format(member, message))
+    random_choice = choice_list[random.randint(0,len(choice_list)-1)]
+    message = "After much deliberating between the options (**" + ', '.join(choice_list) + \
+        '**) it has been decided **' + random_choice + '** is the best.'
+    await bot.say('{0}\n{1}'.format(member, message))
 
 
 @bot.command(pass_context = True)
@@ -127,15 +128,15 @@ async def mention(ctx, *, greeting : str, member : discord.Member = None):
         greeting = Functions.multireplace(greeting, {member:'', '<':'', '>':''})
         member = member.replace('@', '')
     if member is None:
-        member = ctx.message.author.id
-    await bot.say('<@{0}>\n{1}'.format(member, greeting))
+        member = ctx.message.author.mention
+    await bot.say('{0}\n{1}'.format(member, greeting))
 
 
 @bot.command(pass_context = True)
 async def lmgtfy(ctx, *, search : str, member : discord.Member = None):
     search, member = Functions.check_mention(search)
     if member is None:
-        member = '<@' + ctx.message.author.id + '>'
+        member = ctx.message.author.mention
     search = search.replace(' ', '+')
     await bot.say('{0}\nhttps://lmgtfy.com/?q={1}'.format(member, search))
 
@@ -145,8 +146,8 @@ async def lmgtfy(ctx, *, search : str, member : discord.Member = None):
 async def pinguser(ctx, *, pu_name : str):
 	user = discord.Server.get_member_named(ctx.message.server, pu_name)
 	if user is not None:
-		user_id = user.id
-		await bot.say('<@' + user_id + '>')
+		user_id = user.mention
+		await bot.say(user_id)
 	else:
 		await bot.say("User not found.")
 
@@ -170,6 +171,36 @@ async def test(ctx, *, temp, member: discord.Member = None):
     await bot.say('<@{0}>'.format(member))
     await bot.say(str(ctx.message.content))
 """
+
+
+#Allows members to broadcast their interest to start a mission with other players, so that it is posted in a dedicated channel. Optional: ping a specific 'looking for games' role, display time since message was posted. 
+@bot.command(pass_context=True)
+async def host_mission(ctx, *, host_message : str, member : discord.Member = None):
+	#await bot.send_message(discord.Object(id='404410215564312576'),  '**Mission Board:**') #Use this to make an initial message
+	final_message = ''
+	global host_dict
+	if member is None:
+		member = ctx.message.author
+	if member.id in host_dict:
+		del host_dict[member.id]
+	host_dict[member.id] = '**{0}:** {1}'.format(member.display_name, host_message)
+	final_message = Functions.edit_host_message(host_dict)
+	await bot.edit_message(await bot.get_message(bot.get_channel('404410215564312576'), '404426711577526293'), final_message)
+
+
+#Allows members to stop broadcasting their mission
+@bot.command(pass_context=True)
+async def stop_hosting(ctx, *, member : discord.Member = None):
+	final_message = ''
+	global host_dict
+	if member is None:
+		member = ctx.message.author
+	if member.id in host_dict:
+		del(host_dict[member.id])
+		final_message = Functions.edit_host_message(host_dict)
+		await bot.edit_message(await bot.get_message(bot.get_channel('404410215564312576'), '404426711577526293'), final_message)
+	else:
+		await bot.say('{0} is not hosting a mission'.format(member.display_name))
 
 
 #start the bot	

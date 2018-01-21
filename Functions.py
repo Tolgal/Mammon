@@ -123,7 +123,11 @@ def create_servers_files(csf_servers):
 		file.close()
 	return
 
-
+def edit_host_message(host_dict : dict):
+	final_message = '**Mission Board:** '
+	for a in host_dict:
+		final_message = '{0}\n{1}'.format(final_message, host_dict[a])
+	return final_message
 
 if __name__ == "__main__":
     print(check_mention("peanut"))
