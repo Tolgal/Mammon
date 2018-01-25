@@ -118,19 +118,6 @@ async def choose(ctx, *, choices : str, member : discord.Member = None):
     await bot.say('{0}\n{1}'.format(member, message))
 
 
-@bot.command(pass_context = True)
-async def mention(ctx, *, greeting : str, member : discord.Member = None):
-    rex = re.compile("^.*?@[0-9]*.*?$")
-    if rex.match(greeting):
-        match = re.search("@[0-9]*", greeting)
-        member = match.group(0)
-        greeting = greeting.replace(member, '')
-        greeting = Functions.multireplace(greeting, {member:'', '<':'', '>':''})
-        member = member.replace('@', '')
-    if member is None:
-        member = ctx.message.author.mention
-    await bot.say('{0}\n{1}'.format(member, greeting))
-
 
 @bot.command(pass_context = True)
 async def lmgtfy(ctx, *, search : str, member : discord.Member = None):

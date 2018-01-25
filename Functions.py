@@ -110,7 +110,6 @@ def create_server_dict(csd_botservers):
 			servers[server]['roles'].append(role.id)
 		for member in server.members:
 			servers[server]['members'].append(member.id)
-	print(servers)
 	create_servers_files(servers)
 	return
 
