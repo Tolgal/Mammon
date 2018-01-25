@@ -15,7 +15,7 @@ delete_commands = ('-google', '-roll', '-randchar')
 host_dict = {} #Creates the dictionary for the host messages.
 
 # Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
-bot = commands.Bot(command_prefix="-", description="4LAN basic Bot", pm_help = True)
+bot = commands.Bot(command_prefix="-", description="4LAN basic Bot", pm_help = True, help_attrs=dict(hidden=True,brief="This is just the help function"))
 
 # This is what happens everytime the bot launches. In this case, it prints information like server count, user count the bot is connected to, and the bot id in the console.
 
@@ -45,50 +45,59 @@ async def on_message(message):
 
 
 # ping > pong
-@bot.command(brief='Play PingPong with Mammon', description='Play PingPong with Mammon. Bot returns :ping_pong: Pong!')
+@bot.command(brief='Play PingPong with Mammon')
 async def ping(*args):
-
+	"""Play PingPong with Mammon. Bot returns :ping_pong: Pong!"""
 	await bot.say(":ping_pong: Pong!")
 
 
 #Basic "let me google that for you" command for the bot
-@bot.command(pass_context=True)
+@bot.command(pass_context=True, brief='Google something')
 async def google(ctx, *, search : str, member: discord.Member = None):
-        if member is None:
-            member = ctx.message.author.mention
-        await bot.say('{0}\nLet me google that for you:\n'.format(member) + ('https://google.com/search?q=%s&tbm=isch') % (search))
+	"""
+	Google something
+	"""
+	if member is None:
+		member = ctx.message.author.mention
+	await bot.say('{0}\nLet me google that for you:\n'.format(member) + ('https://google.com/search?q=%s&tbm=isch') % (search))
 
 
 #The DnD Roll function
-@bot.command(pass_context=True)
+@bot.command(pass_context=True, brief='Roll dice')
 async def roll(ctx, *, dice : str, member: discord.Member = None):
-    if member is None:
-        member = ctx.message.author.mention
-    ## Clean up string and convert to list
-    dice_list = Functions.cleanup_roll(dice)
-    # loop through all elements in dice_list and if its an int put it as a list in results
-    # or if in format NdN send to function for list of random numbers and put in results
-    # if not in right format comment will be sent and function is stopped
-    results = []
-    rex = re.compile("^[0-9]+d[0-9]+$")
-    for i in dice_list:
-        if i.replace("-", "").isdigit() == True:
-            results.append([int(i)])
-        elif rex.match(i.replace("-", "")):
-            results.append(Functions.create_die(i))
-        else:
-            comment = 'This is not the right format: ' + i
-            await bot.say(comment)
-            return
-    # Calculate sum of all numbers in results and formulate answer string
-    # Formulate answer string
-    answer = Functions.create_roll_answer(dice_list, results)
-    await bot.say('{0}{1}'.format(member, answer))
+	"""
+	Roll dice
+	"""
+	if member is None:
+		member = ctx.message.author.mention
+	## Clean up string and convert to list
+	dice_list = Functions.cleanup_roll(dice)
+	# loop through all elements in dice_list and if its an int put it as a list in results
+	# or if in format NdN send to function for list of random numbers and put in results
+	# if not in right format comment will be sent and function is stopped
+	results = []
+	rex = re.compile("^[0-9]+d[0-9]+$")
+	for i in dice_list:
+		if i.replace("-", "").isdigit() == True:
+			results.append([int(i)])
+		elif rex.match(i.replace("-", "")):
+			results.append(Functions.create_die(i))
+		else:
+			comment = 'This is not the right format: ' + i
+			await bot.say(comment)
+			return
+	# Calculate sum of all numbers in results and formulate answer string
+	# Formulate answer string
+	answer = Functions.create_roll_answer(dice_list, results)
+	await bot.say('{0}{1}'.format(member, answer))
 
 
 #Rolls 4d6 (keep highest 3) six times
-@bot.command(pass_context=True)
+@bot.command(pass_context=True, brief='Create random stats for character')
 async def randchar(ctx, member: discord.Member = None):
+	"""
+	Create random stats for character
+	"""
 	stat_names = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA']
 	result = ""
 	if member is None:
@@ -102,35 +111,43 @@ async def randchar(ctx, member: discord.Member = None):
 	await bot.say('{0}\n{1}'.format(member, result))
 
 
-@bot.command(pass_context = True)
+@bot.command(pass_context = True, brief='Chooses one thing at random')
 async def choose(ctx, *, choices : str, member : discord.Member = None):
-	#Returns a random element from a backwards slash seperated string
-    if member is None:
-        member = ctx.message.author.mention
-    try:
-        choice_list = choices.split('/')
-    except Exception:
-        await bot.say('Choices have to be separated by a "/"')
-        return
-    random_choice = choice_list[random.randint(0,len(choice_list)-1)]
-    message = "After much deliberating between the options (**" + ', '.join(choice_list) + \
-        '**) it has been decided **' + random_choice + '** is the best.'
-    await bot.say('{0}\n{1}'.format(member, message))
+	"""
+	Returns a random element from a backwards slash seperated string
+	"""
+	if member is None:
+		member = ctx.message.author.mention
+	try:
+		choice_list = choices.split('/')
+	except Exception:
+		await bot.say('Choices have to be separated by a "/"')
+		return
+	random_choice = choice_list[random.randint(0,len(choice_list)-1)]
+	message = "After much deliberating between the options (**" + ', '.join(choice_list) + \
+		'**) it has been decided **' + random_choice + '** is the best.'
+	await bot.say('{0}\n{1}'.format(member, message))
 
 
 
-@bot.command(pass_context = True)
+@bot.command(pass_context = True, brief='Returns lmgtfy link with mention')
 async def lmgtfy(ctx, *, search : str, member : discord.Member = None):
-    search, member = Functions.check_mention(search)
-    if member is None:
-        member = ctx.message.author.mention
-    search = search.replace(' ', '+')
-    await bot.say('{0}\nhttps://lmgtfy.com/?q={1}'.format(member, search))
+	"""
+	Returns lmgtfy link with mention
+	"""
+	search, member = Functions.check_mention(search)
+	if member is None:
+		member = ctx.message.author.mention
+	search = search.replace(' ', '+')
+	await bot.say('{0}\nhttps://lmgtfy.com/?q={1}'.format(member, search))
 
 
 #Mentions an user using name
-@bot.command(pass_context=True)
+@bot.command(pass_context=True, brief='Mentions user')
 async def pinguser(ctx, *, pu_name : str):
+	"""
+	Mentions user
+	"""
 	user = discord.Server.get_member_named(ctx.message.server, pu_name)
 	if user is not None:
 		user_id = user.mention
@@ -139,7 +156,7 @@ async def pinguser(ctx, *, pu_name : str):
 		await bot.say("User not found.")
 
 
-@bot.command(pass_context=True)
+@bot.command(pass_context=True, hidden = True)
 async def test(ctx, roles: discord.Member.roles = None):
     if roles is None:
         roles = ctx.message.author.roles
