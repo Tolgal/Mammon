@@ -123,7 +123,7 @@ async def choose(ctx, *, choices : str, member : discord.Member = None):
 	except Exception:
 		await bot.say('Choices have to be separated by a "/"')
 		return
-	random_choice = choice_list[random.randint(0,len(choice_list)-1)]
+	random_choice = random.choice(choice_list)
 	message = "After much deliberating between the options (**" + ', '.join(choice_list) + \
 		'**) it has been decided **' + random_choice + '** is the best.'
 	await bot.say('{0}\n{1}'.format(member, message))
