@@ -1,8 +1,9 @@
 #Import basic Discord modules
 import discord
 import asyncio
-from discord.ext import commands
 import platform
+
+from discord.ext import commands
 
 #Import Google API stuff
 import httplib2
