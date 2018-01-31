@@ -1,20 +1,10 @@
-#Import basic Discord modules
+# These are the dependecies. The bot depends on these to function, hence the name. Please do not change these unless your adding to them, because they can break the bot.
 import discord
 import asyncio
+from discord.ext import commands
 import platform
 
-from discord.ext import commands
-
-#Import Google API stuff
-import httplib2
-import os
-
-from apiclient import discovery
-from oauth2client import client
-from oauth2client import tools
-from oauth2client.file import Storage
-
-#Import custom modules
+#custom import modules
 import key
 import random
 import Functions
@@ -220,9 +210,6 @@ async def stop_hosting(ctx, *, member : discord.Member = None):
 
 @bot.command(pass_context=True)
 async def rps(ctx, *, pchoice:str, member : discord.Member = None):
-	"""
-	Play rock, paper, scissors against Mammon
-	"""
 	if member is None:
 		member = ctx.message.author.mention
 	rpsdict = {'rock':'scissors', 'paper':'rock', 'scissors':'paper'}
