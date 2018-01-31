@@ -8,6 +8,7 @@
 *.sln.docstates
 key.py
 /4LAN Bot development.txt
+Client_Secret.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
