@@ -2,6 +2,7 @@
 import random
 import re
 import os
+import oauth2client
 
 def random_numbers(number, die, addition):
 	 #Generates numbers and adds them to each other
@@ -142,14 +143,13 @@ def get_credentials(file_Name):
 
 	Returns: Credentials, the obtained credential.
 	"""
-	home_dir = os.path.expanduser('~')
-	credential_dir = os.path.join(home_dir, '.credentials')
+	credential_dir = 'Credentials'
 	credential_path = os.path.join(credential_dir,file_Name)
 
-	store = Storage(credential_path)
+	store = oauth2client.file.Storage(credential_path)
 	credentials = store.get()
 	return credentials
-
+	
 
 if __name__ == "__main__":
 	print(check_mention("peanut"))

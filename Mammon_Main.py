@@ -12,7 +12,6 @@ import os
 from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
-from oauth2client.file import Storage
 
 #Import custom modules
 import key
@@ -20,7 +19,7 @@ import random
 import Functions
 import re
 
-directories = ['Data', 'Data\\rps']
+directories = ['Data', 'Data\\rps', 'Credentials']
 bot_dev_role_ids = {'Admin':'400573127412678656', 'Bot':'399325522313609217', 'Developer':'399325464855969796'}
 delete_commands = ('-google', '-roll', '-randchar')
 host_dict = {} #Creates the dictionary for the host messages.
