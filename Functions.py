@@ -150,7 +150,7 @@ def get_credentials(file_Name):
 	store = Storage(credential_path)
 	credentials = store.get()
 	return credentials
-	
+
 
 if __name__ == "__main__":
 	print(check_mention("peanut"))
