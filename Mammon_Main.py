@@ -21,7 +21,6 @@ import Functions
 import re
 
 directories = ['Data', 'Data\\rps']
-bot_id = 398605209154224138
 bot_dev_role_ids = {'Admin':'400573127412678656', 'Bot':'399325522313609217', 'Developer':'399325464855969796'}
 delete_commands = ('-google', '-roll', '-randchar')
 host_dict = {} #Creates the dictionary for the host messages.
@@ -228,7 +227,7 @@ async def rps(ctx, *, pchoice:str, member : discord.Member = None):
 		member = ctx.message.author.mention
 	rpsdict = {'rock':'scissors', 'paper':'rock', 'scissors':'paper'}
 	bchoice = random.choice(['rock', 'paper', 'scissors'])
-	answer = '\n{0} chose: {1}\n<@{2}> chose: {3}\n'.format(member,pchoice,bot_id,bchoice)
+	answer = '\n{0} chose: {1}\n<@{2}> chose: {3}\n'.format(member, pchoice, key.BotId, bchoice)
 	try:
 		if bchoice == pchoice.lower():
 			await bot.say(answer + '**It\'s a tie**')

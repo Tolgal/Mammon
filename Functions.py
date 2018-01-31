@@ -130,8 +130,12 @@ def edit_host_message(host_dict : dict):
 		final_message = '{0}\n{1}'.format(final_message, host_dict[a])
 	return final_message
 
-if __name__ == "__main__":
-	print(check_mention("peanut"))
+
+def create_dirs(cd_dirlist):
+    for directory in cd_dirlist:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
 
 def get_credentials(file_Name):
 	"""Gets valid user credentials from storage.
@@ -145,3 +149,7 @@ def get_credentials(file_Name):
 	store = Storage(credential_path)
 	credentials = store.get()
 	return credentials
+
+
+if __name__ == "__main__":
+	print(check_mention("peanut"))
