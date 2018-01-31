@@ -2,7 +2,8 @@
 import random
 import re
 import os
-import oauth2client
+
+from oauth2client.file import Storage
 
 def random_numbers(number, die, addition):
 	 #Generates numbers and adds them to each other
@@ -146,7 +147,7 @@ def get_credentials(file_Name):
 	credential_dir = 'Credentials'
 	credential_path = os.path.join(credential_dir,file_Name)
 
-	store = oauth2client.file.Storage(credential_path)
+	store = Storage(credential_path)
 	credentials = store.get()
 	return credentials
 	
