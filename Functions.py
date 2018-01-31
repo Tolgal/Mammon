@@ -133,18 +133,14 @@ def edit_host_message(host_dict : dict):
 if __name__ == "__main__":
     print(check_mention("peanut"))
 
-def get_credentials():
+def get_credentials(file_Name):
     """Gets valid user credentials from storage.
 
-    If nothing has been stored, or if the stored credentials are invalid,
-    the OAuth2 flow is completed to obtain the new credentials.
-
-    Returns:
-        Credentials, the obtained credential.
+    Returns: Credentials, the obtained credential.
     """
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
-    credential_path = os.path.join(credential_dir,'Client_Secret_Sheets.json')
+    credential_path = os.path.join(credential_dir,file_Name)
 
     store = Storage(credential_path)
     credentials = store.get()
