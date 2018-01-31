@@ -29,7 +29,6 @@ host_dict = {} #Creates the dictionary for the host messages.
 bot = commands.Bot(command_prefix="-", description="4LAN basic Bot", pm_help = True, help_attrs=dict(hidden=True,brief="This is just the help function"))
 
 # This is what happens everytime the bot launches. In this case, it prints information like server count, user count the bot is connected to, and the bot id in the console.
-
 @bot.event
 async def on_ready():
 	print('Logged in as '+bot.user.name+' (ID:'+bot.user.id+') | Connected to '+str(len(bot.servers))+' servers | Connected to '+str(len(set(bot.get_all_members())))+' users')
