@@ -218,15 +218,14 @@ async def stop_hosting(ctx, *, member : discord.Member = None):
 
 
 @bot.command(pass_context=True)
-async def rps(ctx, *, pchoice:str, member : discord.Member = None):
+async def rps(ctx, *, pchoice:str):
 	"""
 	Play rock, paper, scissors against Mammon
 	"""
-	if member is None:
-		member = ctx.message.author.mention
+	member = ctx.message.author.mention
 	rpsdict = {'rock':'scissors', 'paper':'rock', 'scissors':'paper'}
 	bchoice = random.choice(['rock', 'paper', 'scissors'])
-	answer = '\n{0} chose: {1}\n<@{2}> chose: {3}\n'.format(member, pchoice, key.BotId, bchoice)
+	answer = '\n{0} chose: {1}\n{2} chose: {3}\n'.format(member, pchoice, bot.user.mention, bchoice)
 	try:
 		if bchoice == pchoice.lower():
 			await bot.say(answer + '**It\'s a tie**')
