@@ -1,26 +1,15 @@
-#Import basic Discord modules
+# These are the dependecies. The bot depends on these to function, hence the name. Please do not change these unless your adding to them, because they can break the bot.
 import discord
 import asyncio
+from discord.ext import commands
 import platform
 
-from discord.ext import commands
-
-#Import Google API stuff
-import httplib2
-import os
-
-from apiclient import discovery
-from oauth2client import client
-from oauth2client import tools
-from oauth2client.file import Storage
-
-#Import custom modules
+#custom import modules
 import key
 import random
 import Functions
 import re
 
-directories = ['Data', 'Data\\rps']
 bot_id = 398605209154224138
 bot_dev_role_ids = {'Admin':'400573127412678656', 'Bot':'399325522313609217', 'Developer':'399325464855969796'}
 delete_commands = ('-google', '-roll', '-randchar')
@@ -30,6 +19,7 @@ host_dict = {} #Creates the dictionary for the host messages.
 bot = commands.Bot(command_prefix="-", description="4LAN basic Bot", pm_help = True, help_attrs=dict(hidden=True,brief="This is just the help function"))
 
 # This is what happens everytime the bot launches. In this case, it prints information like server count, user count the bot is connected to, and the bot id in the console.
+
 @bot.event
 async def on_ready():
 	print('Logged in as '+bot.user.name+' (ID:'+bot.user.id+') | Connected to '+str(len(bot.servers))+' servers | Connected to '+str(len(set(bot.get_all_members())))+' users')
@@ -39,7 +29,6 @@ async def on_ready():
 	print('Use this link to invite {}:'.format(bot.user.name))
 	print('https://discordapp.com/oauth2/authorize?bot_id={}&scope=bot&permissions=8'.format(bot.user.id))
 	await bot.change_presence(game=discord.Game(name="Say -help Tolgal is evil!"))
-	Functions.create_dirs(directories)
 	Functions.create_server_dict(bot.servers)
 
 
@@ -48,12 +37,12 @@ async def on_ready():
 #Automatically removes commands given to bot
 @bot.event
 async def on_message(message):
-	if message.content.startswith(delete_commands):
-		try:
-			await bot.delete_message(message)
-		except:
-			pass
-	await bot.process_commands(message)
+    if message.content.startswith(delete_commands):
+        try:
+            await bot.delete_message(message)
+        except:
+            pass
+    await bot.process_commands(message)
 
 
 # ping > pong
@@ -170,22 +159,22 @@ async def pinguser(ctx, *, pu_name : str):
 
 @bot.command(pass_context=True, hidden = True)
 async def test(ctx, roles: discord.Member.roles = None):
-	if roles is None:
-		roles = ctx.message.author.roles
-	if bot_dev_role_ids.get('Developer') in [y.id for y in roles]:
-		await bot.say('You have permission to use this command')
-	else:
-		await bot.say('You don\'t have permission to use this command')
+    if roles is None:
+        roles = ctx.message.author.roles
+    if bot_dev_role_ids.get('Developer') in [y.id for y in roles]:
+        await bot.say('You have permission to use this command')
+    else:
+        await bot.say('You don\'t have permission to use this command')
 
 
 """
 #test getting the user ID + commands
 @bot.command(pass_context=True)
 async def test(ctx, *, temp, member: discord.Member = None):
-	if member is None:
-		member = ctx.message.author.id
-	await bot.say('<@{0}>'.format(member))
-	await bot.say(str(ctx.message.content))
+    if member is None:
+        member = ctx.message.author.id
+    await bot.say('<@{0}>'.format(member))
+    await bot.say(str(ctx.message.content))
 """
 
 
@@ -221,9 +210,6 @@ async def stop_hosting(ctx, *, member : discord.Member = None):
 
 @bot.command(pass_context=True)
 async def rps(ctx, *, pchoice:str, member : discord.Member = None):
-	"""
-	Play rock, paper, scissors against Mammon
-	"""
 	if member is None:
 		member = ctx.message.author.mention
 	rpsdict = {'rock':'scissors', 'paper':'rock', 'scissors':'paper'}
