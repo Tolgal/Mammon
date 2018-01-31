@@ -1,10 +1,19 @@
-# These are the dependecies. The bot depends on these to function, hence the name. Please do not change these unless your adding to them, because they can break the bot.
+#Import basic Discord modules
 import discord
 import asyncio
 from discord.ext import commands
 import platform
 
-#custom import modules
+#Import Google API stuff
+import httplib2
+import os
+
+from apiclient import discovery
+from oauth2client import client
+from oauth2client import tools
+from oauth2client.file import Storage
+
+#Import custom modules
 import key
 import random
 import Functions
