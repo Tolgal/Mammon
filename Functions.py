@@ -131,17 +131,17 @@ def edit_host_message(host_dict : dict):
 	return final_message
 
 if __name__ == "__main__":
-    print(check_mention("peanut"))
+	print(check_mention("peanut"))
 
 def get_credentials(file_Name):
-    """Gets valid user credentials from storage.
+	"""Gets valid user credentials from storage.
 
-    Returns: Credentials, the obtained credential.
-    """
-    home_dir = os.path.expanduser('~')
-    credential_dir = os.path.join(home_dir, '.credentials')
-    credential_path = os.path.join(credential_dir,file_Name)
+	Returns: Credentials, the obtained credential.
+	"""
+	home_dir = os.path.expanduser('~')
+	credential_dir = os.path.join(home_dir, '.credentials')
+	credential_path = os.path.join(credential_dir,file_Name)
 
-    store = Storage(credential_path)
-    credentials = store.get()
-    return credentials
+	store = Storage(credential_path)
+	credentials = store.get()
+	return credentials

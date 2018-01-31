@@ -46,12 +46,12 @@ async def on_ready():
 #Automatically removes commands given to bot
 @bot.event
 async def on_message(message):
-    if message.content.startswith(delete_commands):
-        try:
-            await bot.delete_message(message)
-        except:
-            pass
-    await bot.process_commands(message)
+	if message.content.startswith(delete_commands):
+		try:
+			await bot.delete_message(message)
+		except:
+			pass
+	await bot.process_commands(message)
 
 
 # ping > pong
@@ -168,22 +168,22 @@ async def pinguser(ctx, *, pu_name : str):
 
 @bot.command(pass_context=True, hidden = True)
 async def test(ctx, roles: discord.Member.roles = None):
-    if roles is None:
-        roles = ctx.message.author.roles
-    if bot_dev_role_ids.get('Developer') in [y.id for y in roles]:
-        await bot.say('You have permission to use this command')
-    else:
-        await bot.say('You don\'t have permission to use this command')
+	if roles is None:
+		roles = ctx.message.author.roles
+	if bot_dev_role_ids.get('Developer') in [y.id for y in roles]:
+		await bot.say('You have permission to use this command')
+	else:
+		await bot.say('You don\'t have permission to use this command')
 
 
 """
 #test getting the user ID + commands
 @bot.command(pass_context=True)
 async def test(ctx, *, temp, member: discord.Member = None):
-    if member is None:
-        member = ctx.message.author.id
-    await bot.say('<@{0}>'.format(member))
-    await bot.say(str(ctx.message.content))
+	if member is None:
+		member = ctx.message.author.id
+	await bot.say('<@{0}>'.format(member))
+	await bot.say(str(ctx.message.content))
 """
 
 
