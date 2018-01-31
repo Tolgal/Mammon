@@ -146,7 +146,10 @@ def get_credentials(file_Name):
     return credentials
 
 
-
+def create_dirs(cd_dirlist):
+	for directory in cd_dirlist:
+		if not os.path.exists(directory):
+			os.makedirs(directory)
 
 
 

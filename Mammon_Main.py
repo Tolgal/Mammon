@@ -20,6 +20,7 @@ import random
 import Functions
 import re
 
+directories = ['Data', 'Data\\rps']
 bot_id = 398605209154224138
 bot_dev_role_ids = {'Admin':'400573127412678656', 'Bot':'399325522313609217', 'Developer':'399325464855969796'}
 delete_commands = ('-google', '-roll', '-randchar')
@@ -38,6 +39,7 @@ async def on_ready():
 	print('Use this link to invite {}:'.format(bot.user.name))
 	print('https://discordapp.com/oauth2/authorize?bot_id={}&scope=bot&permissions=8'.format(bot.user.id))
 	await bot.change_presence(game=discord.Game(name="Say -help Tolgal is evil!"))
+	Functions.create_dirs(directories)
 	Functions.create_server_dict(bot.servers)
 
 
