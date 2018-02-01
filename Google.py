@@ -14,6 +14,7 @@ except ImportError:
     flags = None
 
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
+CLIENT_SECRET_FILE = 'client_secret_Sheets.json'
 APPLICATION_NAME = 'Mammon_Bot'
 
 def main():
@@ -23,7 +24,7 @@ def main():
     students in a sample spreadsheet:
     https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
     """
-    credentials = get_credentials('Client_Secret_Sheets.json')
+    credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
                     'version=v4')
@@ -45,16 +46,25 @@ def main():
             print('%s, %s' % (row[0], row[4]))
 
 
-def get_credentials(file_Name):
+def get_credentials():
 	"""Gets valid user credentials from storage.
 
 	Returns: Credentials, the obtained credential.
 	"""
 	credential_dir = 'Credentials'
-	credential_path = os.path.join(credential_dir,file_Name)
+	credential_path = os.path.join(credential_dir,'sheets.googleapis.com-python-mammon.json')
 
 	store = Storage(credential_path)
+	print(store)
 	credentials = store.get()
+	if not credentials or credentials.invalid:
+		flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
+		flow.user_agent = APPLICATION_NAME
+		if flags:
+			credentials = tools.run_flow(flow, store, flags)
+		else: # Needed only for compatibility with Python 2.6
+			credentials = tools.run(flow, store)
+		print('Storing credentials to ' + credential_path)
 	return credentials
 
 if __name__ == '__main__':
