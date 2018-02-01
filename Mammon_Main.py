@@ -20,6 +20,7 @@ import random
 import Functions
 import re
 
+allowed = []
 directories = ['Data', 'Data\\rps']
 bot_dev_role_ids = {'Admin':'400573127412678656', 'Bot':'399325522313609217', 'Developer':'399325464855969796'}
 delete_commands = ('-google', '-roll', '-randchar')
@@ -47,11 +48,28 @@ async def on_ready():
 #Automatically removes commands given to bot
 @bot.event
 async def on_message(message):
+	if message.author.bot:
+		return
 	if message.content.startswith(delete_commands):
 		try:
 			await bot.delete_message(message)
 		except:
 			pass
+	global allowed
+	allowed, check, new = Functions.check_allowed(message, allowed)
+	if new == True:
+		try:
+			await bot.delete_message(message)
+		except:
+			pass
+		await bot.send_message(message.channel, '{} As my loyal servant you may now use my services'.format(message.author.mention))
+	if check == False:
+		try:
+			await bot.delete_message(message)
+		except:
+			pass
+		await bot.send_message(message.channel, '{} You have no power here.'.format(message.author.mention))
+		return
 	await bot.process_commands(message)
 
 

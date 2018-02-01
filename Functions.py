@@ -158,5 +158,14 @@ def get_credentials(file_Name):
 	return credentials
 
 
+def check_allowed(ca_message, ca_allowed):
+	if ca_message.author.id not in ca_allowed:
+		if ca_message.content.lower() == 'mammon is my god':
+			ca_allowed.append(ca_message.author.id)
+			return ca_allowed, True, True
+		return ca_allowed, False, False
+	return ca_allowed, True, False
+
+
 if __name__ == "__main__":
 	print(check_mention("peanut"))
