@@ -8,6 +8,7 @@ from discord.ext import commands
 #Import Google API stuff
 import httplib2
 import os
+import Google
 
 from apiclient import discovery
 from oauth2client import client
