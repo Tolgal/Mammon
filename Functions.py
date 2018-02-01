@@ -42,6 +42,12 @@ def multireplace(string, replacements):
     return regexp.sub(lambda match: replacements[match.group(0)], string)
 
 
+def open_file(of_filename):
+	with open(of_filename) as file:
+		lines = file.readlines()
+	return lines
+
+
 def random_roll(rr_number, rr_die):
     """
     Generates rr_number random numbers between 0 and the value of rr_die.
@@ -137,6 +143,28 @@ def create_dirs(cd_dirlist):
     for directory in cd_dirlist:
         if not os.path.exists(directory):
             os.makedirs(directory)
+
+
+def get_credentials(file_Name):
+	"""Gets valid user credentials from storage.
+
+	Returns: Credentials, the obtained credential.
+	"""
+	credential_dir = 'Credentials'
+	credential_path = os.path.join(credential_dir,file_Name)
+
+	store = Storage(credential_path)
+	credentials = store.get()
+	return credentials
+
+
+def check_allowed(ca_message, ca_allowed):
+	if ca_message.author.id not in ca_allowed:
+		if ca_message.content.lower() == 'mammon is my god':
+			ca_allowed.append(ca_message.author.id)
+			return ca_allowed, True, True
+		return ca_allowed, False, False
+	return ca_allowed, True, False
 
 
 if __name__ == "__main__":
