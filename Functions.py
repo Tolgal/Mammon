@@ -1,9 +1,7 @@
 #import modules needed for the functions
 import random
 import re
-import os
 
-from oauth2client.file import Storage
 
 def random_numbers(number, die, addition):
 	 #Generates numbers and adds them to each other
@@ -156,19 +154,6 @@ def create_files(cf_files):
 		except IOError:
 			file = open(file, 'w')
 		file.close()
-
-
-def get_credentials(file_Name):
-	"""Gets valid user credentials from storage.
-
-	Returns: Credentials, the obtained credential.
-	"""
-	credential_dir = 'Credentials'
-	credential_path = os.path.join(credential_dir,file_Name)
-
-	store = Storage(credential_path)
-	credentials = store.get()
-	return credentials
 
 
 def check_allowed(ca_message, ca_allowed):
