@@ -13,7 +13,9 @@ try:
 except ImportError:
     flags = None
 
-SpreadsheetId = '1oBOvCwuoICJVGv0Vz9Wu4PBF8UYy6qmlc4mYBaR7FKE'
+SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
+APPLICATION_NAME = 'Mammon_Bot'
+
 def main():
     """Shows basic usage of the Sheets API.
 
