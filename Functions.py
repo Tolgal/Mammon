@@ -42,6 +42,12 @@ def multireplace(string, replacements):
     return regexp.sub(lambda match: replacements[match.group(0)], string)
 
 
+def open_file(of_filename):
+	with open(of_filename) as file:
+		lines = file.readlines()
+	return lines
+
+
 def random_roll(rr_number, rr_die):
     """
     Generates rr_number random numbers between 0 and the value of rr_die.
