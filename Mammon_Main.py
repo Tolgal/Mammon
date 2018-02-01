@@ -12,6 +12,7 @@ import os
 from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
+from oauth2client.file import Storage
 
 #Import custom modules
 import key
@@ -19,7 +20,7 @@ import random
 import Functions
 import re
 
-directories = ['Data', 'Data\\rps', 'Credentials']
+directories = ['Data', 'Data\\rps']
 bot_dev_role_ids = {'Admin':'400573127412678656', 'Bot':'399325522313609217', 'Developer':'399325464855969796'}
 delete_commands = ('-google', '-roll', '-randchar')
 host_dict = {} #Creates the dictionary for the host messages.
@@ -188,8 +189,11 @@ async def test(ctx, *, temp, member: discord.Member = None):
 
 
 #Allows members to broadcast their interest to start a mission with other players, so that it is posted in a dedicated channel. Optional: ping a specific 'looking for games' role, display time since message was posted. 
-@bot.command(pass_context=True)
+@bot.command(pass_context=True, brief='Allows an user to set up a mission in the #mission-sandbox channel')
 async def host_mission(ctx, *, host_message : str, member : discord.Member = None):
+	"""
+	Type "!host_mission [message]" to display the message in #mission-sandbox. Use !stop_hosting to remove the message.
+	"""
 	#await bot.send_message(discord.Object(id='404410215564312576'),  '**Mission Board:**') #Use this to make an initial message
 	final_message = ''
 	global host_dict
@@ -203,8 +207,11 @@ async def host_mission(ctx, *, host_message : str, member : discord.Member = Non
 
 
 #Allows members to stop broadcasting their mission
-@bot.command(pass_context=True)
+@bot.command(pass_context=True, brief='Deletes your current host message')
 async def stop_hosting(ctx, *, member : discord.Member = None):
+	"""
+	Deletes your current !host_mission message in #mission-sandbox
+	"""
 	final_message = ''
 	global host_dict
 	if member is None:
