@@ -46,6 +46,12 @@ def open_file(of_filename):
 	return lines
 
 
+def write_file(wf_filename, wf_data):
+	with open(wf_filename, 'w') as file:
+		for i in wf_data:
+			file.write(i + '\n')
+
+
 def random_roll(rr_number, rr_die):
     """
     Generates rr_number random numbers between 0 and the value of rr_die.
@@ -119,7 +125,6 @@ def create_server_dict(csd_botservers):
 		for member in server.members:
 			servers[server]['members'].append(member.id)
 	create_servers_files(servers)
-	return
 
 
 def create_servers_files(csf_servers):
@@ -128,7 +133,7 @@ def create_servers_files(csf_servers):
 		string = ','.join(csf_servers[server]['channels']) + '\n' + ','.join(csf_servers[server]['roles']) + '\n' + ','.join(csf_servers[server]['members'])
 		file.write(string)
 		file.close()
-	return
+
 
 def edit_host_message(host_dict : dict):
 	final_message = '**Mission Board:** '
@@ -141,6 +146,14 @@ def create_dirs(cd_dirlist):
     for directory in cd_dirlist:
         if not os.path.exists(directory):
             os.makedirs(directory)
+
+def create_files(cf_files):
+	for file in cf_files:
+		try:
+			file = open(file, 'r')
+		except IOError:
+			file = open(file, 'w')
+		file.close()
 
 
 def check_allowed(ca_message, ca_allowed):

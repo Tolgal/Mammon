@@ -263,3 +263,4 @@ paket-files/
 __pycache__/
 *.pyc
 /Data/4LAN Bot development.txt
+/Data/allowed_users
