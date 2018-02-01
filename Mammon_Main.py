@@ -21,8 +21,9 @@ import random
 import Functions
 import re
 
-allowed = []
+
 directories = ['Data', 'Data\\rps']
+files = ['Data\\allowed_users']
 bot_dev_role_ids = {'Admin':'400573127412678656', 'Bot':'399325522313609217', 'Developer':'399325464855969796'}
 delete_commands = ('-google', '-roll', '-randchar')
 host_dict = {} #Creates the dictionary for the host messages.
@@ -41,6 +42,7 @@ async def on_ready():
 	print('https://discordapp.com/oauth2/authorize?bot_id={}&scope=bot&permissions=8'.format(bot.user.id))
 	await bot.change_presence(game=discord.Game(name="Say -help Tolgal is evil!"))
 	Functions.create_dirs(directories)
+	Functions.create_files(files)
 	Functions.create_server_dict(bot.servers)
 
 
@@ -56,8 +58,10 @@ async def on_message(message):
 			await bot.delete_message(message)
 		except:
 			pass
-	global allowed
+	# global allowed
+	allowed = Functions.open_file('Data\\allowed_users')
 	allowed, check, new = Functions.check_allowed(message, allowed)
+	Functions.write_file('Data\\allowed_users', allowed)
 	if new == True:
 		try:
 			await bot.delete_message(message)
