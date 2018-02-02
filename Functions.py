@@ -2,6 +2,8 @@
 import random
 import re
 import os
+from tempfile import mkstemp
+from shutil import move
 
 
 def random_numbers(number, die, addition):
@@ -39,6 +41,20 @@ def multireplace(string, replacements):
 
     # For each match, look up the new string in the replacements
     return regexp.sub(lambda match: replacements[match.group(0)], string)
+
+
+
+def replace(file_path, pattern, subst):
+    #Create temp file
+    fh, abs_path = mkstemp()
+    with os.fdopen(fh,'w') as new_file:
+        with open(file_path) as old_file:
+            for line in old_file:
+                new_file.write(line.replace(pattern, subst))
+    #Remove original file
+    os.remove(file_path)
+    #Move new file
+    move(abs_path, file_path)
 
 
 def open_file(of_filename):
