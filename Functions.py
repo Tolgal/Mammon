@@ -1,6 +1,7 @@
 #import modules needed for the functions
 import random
 import re
+import os
 
 
 def random_numbers(number, die, addition):
@@ -47,9 +48,10 @@ def open_file(of_filename):
 
 
 def write_file(wf_filename, wf_data):
-	with open(wf_filename, 'w') as file:
+	with open(wf_filename, 'w+') as file:
 		for i in wf_data:
-			file.write(i + '\n')
+			if i not in file.read():
+				file.write(i + '\n')
 
 
 def random_roll(rr_number, rr_die):
@@ -156,13 +158,13 @@ def create_files(cf_files):
 		file.close()
 
 
-def check_allowed(ca_message, ca_allowed):
-	if ca_message.author.id not in ca_allowed:
-		if ca_message.content.lower() == 'mammon is my god':
-			ca_allowed.append(ca_message.author.id)
-			return ca_allowed, True, True
-		return ca_allowed, False, False
-	return ca_allowed, True, False
+def check_allowed(ca_message):
+	with open('Data\\allowed_users') as allowed:
+		if ca_message.author.id not in allowed.read():
+			if ca_message.content.lower() == 'mammon is my god':
+				return ca_message.author.id, True
+			return False, False
+		return False, True
 
 
 if __name__ == "__main__":
