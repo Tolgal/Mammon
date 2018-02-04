@@ -61,7 +61,10 @@ async def on_message(message):
 	# global allowed
 	allowed, check = Functions.check_allowed(message)
 	if allowed:
-		Functions.write_file('Data\\allowed_users', [allowed])
+		allowed_users = Functions.open_file('Data\\allowed_users')
+		allowed_users.append(allowed)
+		allowed_users = stats = [x.strip() for x in allowed_users]
+		Functions.write_file('Data\\allowed_users', allowed_users)
 		try:
 			await bot.delete_message(message)
 		except:
