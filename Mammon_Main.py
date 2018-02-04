@@ -257,7 +257,6 @@ async def rps(ctx, *, pchoice:str):
 	stats = [x.split(',') for x in stats]
 	for user in stats[1:]:
 		users.append(user[0])
-	print(stats)
 	if ctx.message.author.id not in users:
 		stats.append([ctx.message.author.id,'0','0','0','0','0'])
 	for stat in stats:
@@ -290,6 +289,21 @@ async def rps(ctx, *, pchoice:str):
 		Functions.write_file('Data\\rps', stats)
 	except:
 		print('exception')
+
+
+@bot.command(pass_context=True)
+async def rpsstats(ctx):
+	users = []
+	stats = Functions.open_file('Data\\rps')
+	stats = [x.strip() for x in stats]
+	stats = [x.split(',') for x in stats]
+	for user in stats[1:]:
+		users.append(user[0])
+	if ctx.message.author.id not in users:
+		await bot.say('There are not yet stats for you')
+	for stat in stats:
+		if stat[0] == ctx.message.author.id:
+			await bot.say('{0}```css\nYour stats for \'Rock, paper, scissors\' are:\n{1}: {2}\n{3}: {4}\n{5}: ''{6}\n{7}: {8}\n{9}: {10}```'.format(ctx.message.author.mention, stats[0][1], stat[1], stats[0][2], stat[2], stats[0][3], stat[3], stats[0][4], stat[4], stats[0][5], stat[5]))
 
 
 #start the bot	
