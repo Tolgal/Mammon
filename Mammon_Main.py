@@ -249,7 +249,13 @@ async def stop_hosting(ctx, *, member : discord.Member = None):
 		await mammon.say('{0} is not hosting a mission'.format(member.display_name))
 
 
-@mammon.command(pass_context=True)
+@mammon.group(pass_context=True)
+async def play(ctx):
+	if ctx.invoked_subcommand is None:
+		await mammon.say('Invalid sub command passed...')
+
+
+@play.command(pass_context=True)
 async def rps(ctx, *, pchoice:str):
 	"""
 	Play rock, paper, scissors against Mammon
@@ -294,8 +300,14 @@ async def rps(ctx, *, pchoice:str):
 		print('exception')
 
 
-@mammon.command(pass_context=True)
-async def rpsstats(ctx):
+@mammon.group(pass_context=True)
+async def stats(ctx):
+	if ctx.invoked_subcommand is None:
+		await mammon.say('Invalid sub command passed...')
+
+
+@stats.command(pass_context=True)
+async def rps(ctx):
 	users = []
 	stats = Functions.open_file('Data\\rps')
 	stats = [x.strip() for x in stats]
