@@ -261,11 +261,7 @@ async def rps(ctx, *, pchoice:str):
 	Play rock, paper, scissors against Mammon
 	"""
 	users = []
-	stats = Functions.open_file('Data\\rps')
-	stats = [x.strip() for x in stats]
-	stats = [x.split(',') for x in stats]
-	for user in stats[1:]:
-		users.append(user[0])
+	stats, users = Functions.get_stats()
 	if ctx.message.author.id not in users:
 		stats.append([ctx.message.author.id,'0','0','0','0','0'])
 	for stat in stats:
@@ -273,31 +269,16 @@ async def rps(ctx, *, pchoice:str):
 			user_stats = stat
 			index = stats.index(stat)
 	member = ctx.message.author.mention
-	rpsdict = {'rock':'scissors', 'paper':'rock', 'scissors':'paper'}
 	bchoice = random.choice(['rock', 'paper', 'scissors'])
 	answer = '\n{0} chose: {1}\n{2} chose: {3}\n'.format(member, pchoice, mammon.user.mention, bchoice)
-	try:
-		if bchoice == pchoice.lower():
-			await mammon.say(answer + '**It\'s a tie**')
-			user_stats[2] = str(int(user_stats[2])+ 1)
-			user_stats[5] = '0'
-		elif rpsdict[pchoice.lower()] == bchoice:
-			await mammon.say(answer + '**You won :frowning:**')
-			user_stats[1] = str(int(user_stats[1])+ 1)
-			user_stats[5] = str(int(user_stats[5])+ 1)
-			if int(user_stats[5]) > int(user_stats[4]):
-				user_stats[4] = user_stats[5]
-		elif rpsdict[bchoice.lower()] == pchoice:
-			await mammon.say(answer + '**I won :smile:**')
-			user_stats[3] = str(int(user_stats[3])+ 1)
-			user_stats[5] = '0'
-		else:
-			await mammon.say('{0} Something went wrong'.format(member))
-		stats[index] = stat
-		stats = [','.join(x) for x in stats]
-		Functions.write_file('Data\\rps', stats)
-	except:
-		print('exception')
+	answer, user_stats = Functions.check_choices(bchoice, pchoice, answer, user_stats)
+	if answer:
+		await mammon.say(answer)
+	else:
+		await mammon.say('{0} Something went wrong'.format(member))
+	stats[index] = user_stats
+	stats = [','.join(x) for x in stats]
+	Functions.write_file('Data\\rps', stats)
 
 
 @mammon.group(pass_context=True)
@@ -309,11 +290,7 @@ async def stats(ctx):
 @stats.command(pass_context=True)
 async def rps(ctx):
 	users = []
-	stats = Functions.open_file('Data\\rps')
-	stats = [x.strip() for x in stats]
-	stats = [x.split(',') for x in stats]
-	for user in stats[1:]:
-		users.append(user[0])
+	stats, users = Functions.get_stats()
 	if ctx.message.author.id not in users:
 		await mammon.say('There are not yet stats for you')
 	for stat in stats:

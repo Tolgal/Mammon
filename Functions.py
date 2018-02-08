@@ -183,5 +183,39 @@ def check_allowed(ca_message):
 		return False, True
 
 
+def get_stats():
+	users = []
+	stats = open_file('Data\\rps')
+	stats = [x.strip() for x in stats]
+	stats = [x.split(',') for x in stats]
+	for user in stats[1:]:
+		users.append(user[0])
+	return stats, users
+
+
+def check_choices(cc_bchoice, cc_pchoice, cc_answer, cc_user_stats):
+	rpsdict = {'rock':'scissors', 'paper':'rock', 'scissors':'paper'}
+	try:
+		if cc_bchoice == cc_pchoice.lower():
+			cc_answer = cc_answer + '**It\'s a tie**'
+			cc_user_stats[2] = str(int(cc_user_stats[2])+ 1)
+			cc_user_stats[5] = '0'
+		elif rpsdict[cc_pchoice.lower()] == cc_bchoice:
+			cc_answer = cc_answer + '**You won :frowning:**'
+			cc_user_stats[1] = str(int(cc_user_stats[1])+ 1)
+			cc_user_stats[5] = str(int(cc_user_stats[5])+ 1)
+			if int(cc_user_stats[5]) > int(cc_user_stats[4]):
+				cc_user_stats[4] = cc_user_stats[5]
+		elif rpsdict[cc_bchoice.lower()] == cc_pchoice:
+			cc_answer = cc_answer + '**I won :smile:**'
+			cc_user_stats[3] = str(int(cc_user_stats[3])+ 1)
+			cc_user_stats[5] = '0'
+		else:
+			cc_answer = False
+	except:
+		cc_answer = False
+	return cc_answer, cc_user_stats
+
+
 if __name__ == "__main__":
 	print(check_mention("peanut"))
