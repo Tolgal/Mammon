@@ -260,7 +260,6 @@ async def rps(ctx, *, pchoice:str):
 	"""
 	Play rock, paper, scissors against Mammon
 	"""
-	users = []
 	stats, users = Functions.get_stats()
 	if ctx.message.author.id not in users:
 		stats.append([ctx.message.author.id,'0','0','0','0','0'])
